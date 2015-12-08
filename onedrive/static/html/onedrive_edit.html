@@ -1,0 +1,48 @@
+<div class="wrapper-comp-settings is-active editor-with-buttons onedrive-xblock" id="settings-tab">
+
+    <ul class="list-input settings-list">
+        <li class="field comp-setting-entry is-set">
+            <label class="label setting-label">Title of this component</label>
+            <input class="input setting-input" id="edit_display_name" name="edit_display_name" value="{self.display_name}" type="text">
+        </li>
+
+        <li class="field comp-setting-entry is-set">
+            <label class="label setting-label">The document URL</label>
+            <!--<input class="input setting-input" id="edit_ms_ocument_url" name="edit_document_url"  value="{self.document_url}" type="text">-->
+            <!--<button id="onedrive_btn">Open from OneDrive</button>-->
+            <button id="onedrive_btn" title='Open from OneDrive'>
+                <img src='https://js.live.net/v5.0/images/SkyDrivePicker/SkyDriveIcon_white.png' style='vertical-align: middle; height: 16px;'>
+                <span class='oneDriveButton'>Open from OneDrive</span>
+            </button>
+            <span class="tip setting-help">This should be a URL where someone can view this document. (If you already have an embed code, that will work too.)</span>
+        </li>
+
+       <li class="field comp-setting-entry is-set">
+            <label class="label setting-label">The manner in which the document is displayed</label>
+            <select name=model class="input setting-input selectf" id="output_models">
+            <option value='1' {self.model1}>Embed the document</option>
+            <option value='2' {self.model2}>Add a reference to the document</option>
+            </select>
+            <span class="tip setting-help">This specifies how you want the document to appear inside the component.</span>
+        </li>
+        
+        <li class="field comp-setting-entry is-set" id='add_reference_name'>
+            <label class="label setting-label">Text to use for the reference</label>
+            <input class="input setting-input" id="edit_reference_name" name="edit_reference_name"  value="{self.reference_name}" type="text" placeholder="Type the text to use for the link">	
+        </li>
+    </ul>
+
+    <div class="xblock-actions">
+        <span class="xblock-editor-error-message">
+            <span class="error-message">Please enter valid values into the highlighted fields above.</span>
+        </span>
+        <ul>
+            <li class="action-item">
+                <a href="#" class="save-button action-primary action">Save</a>
+            </li>
+            <li class="action-item">
+                <a href="#" class="button cancel-button">Cancel</a>
+            </li>
+        </ul>
+  </div>
+</div>
