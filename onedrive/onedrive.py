@@ -1,9 +1,3 @@
-""" 
-The "File Storage XBlock" allows course staffers to add files stored in various internet file storage services to the courseware (courseware, course info and syllabus) 
-by adding a link through an advanced component that they create in edX's Studio authoring tool. The files can be added either as embedded content, 
-or as links to the files in their original location.
-""" 
-
 import textwrap
 
 import pkg_resources
@@ -127,7 +121,6 @@ class OneDriveXBlock(XBlock):
         frag.add_css(self.resource_string("static/css/onedrive.css"))
         frag.add_javascript(self.resource_string("static/js/src/onedrive_edit.js"))
         frag.initialize_js('OneDriveXBlock')
-        frag.add_content(u'<div id="onedrive-js" client-id="869cea06-5f59-4bb9-8e14-a8625d937601"></div>')
         return frag
 
     @XBlock.json_handler
