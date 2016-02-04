@@ -14,7 +14,7 @@ function OneDriveXBlock(runtime, element) {
     var reference_name_val = reference_name.val().trim();
 
     clearErrors();
-    
+
     if (!display_name_val) {
       display_name.addClass('error');
       error_message.addClass('visible');
@@ -38,7 +38,7 @@ function OneDriveXBlock(runtime, element) {
       error_message.addClass('visible');
       return;
     }
-    
+
     var data = {
       display_name: display_name_val,
       reference_name: reference_name_val,
@@ -74,25 +74,25 @@ function OneDriveXBlock(runtime, element) {
     if ($("#output_models" ).val() == 2){
       $("#add_reference_name").show();
     } else {
-      $("#add_reference_name").hide();  
+      $("#add_reference_name").hide();
     }
   });
-  
+
   function clearErrors() {
     display_name.removeClass('error');
     document_url.removeClass('error');
     reference_name.removeClass('error');
     error_message.removeClass('visible');
   }
-  
+
   function isValidUrl(url) {
     return /^(https?):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(url);
   }
-  
+
   function isValidEmbedCode(code) {
     return /<iframe /i.test(code);
   }
-  
+
 
   $(function ($) {
     /* Here's where you'd do things on page load. */
@@ -101,34 +101,5 @@ function OneDriveXBlock(runtime, element) {
     } else {
       $("#add_reference_name").hide();
     }
-
-    require( ["onedrive"], function (onedrive) {
-
-      $('#onedrive_btn').click(function(){
-                //alert('in edit');
-
-        var pickerOptions = {
-            success: function(files) {
-                // Handle returned file object(s)
-                alert("You picked " + files.values[0].fileName);
-            },
-
-            cancel: function() {
-                // Handle when the user cancels picking a file
-            },
-
-            error: function(e) {
-                // Handle when there is an error getting a link to the selected file
-            },
-
-            linkType: "downloadLink",
-            multiSelect: false, // or true
-            openInNewWindow: true // or false
-        };
-        OneDrive.open(pickerOptions);
-      });
-    }
-  );
-
   });
 }

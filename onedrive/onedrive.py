@@ -1,9 +1,3 @@
-""" 
-The "File Storage XBlock" allows course staffers to add files stored in various internet file storage services to the courseware (courseware, course info and syllabus) 
-by adding a link through an advanced component that they create in edX's Studio authoring tool. The files can be added either as embedded content, 
-or as links to the files in their original location.
-""" 
-
 import textwrap
 
 import pkg_resources
@@ -23,11 +17,26 @@ from xmodule.contentstore.django import contentstore
 from xmodule.contentstore.content import StaticContent
 from opaque_keys.edx.keys import CourseKey
 LOG = logging.getLogger(__name__)
-from filter import Filter
+
+import re
+from urlparse import parse_qs, urlsplit, urlunsplit
+from urllib import urlencode
 
 DEFAULT_DOCUMENT_URL = ('https://onedrive.live.com/embed?cid=ADC6477D8F22FD9D&resid=ADC6477D8F22FD9D%21104&authkey=AFWEOfGpKb8L29w&em=2&wdStartOn=1')
 
 class OneDriveXBlock(XBlock):
+
+    EMBED_CODE_TEMPLATE = textwrap.dedent("""
+        <iframe
+            src="{}"
+            frameborder="0"
+            width="960"
+            height="569"
+            allowfullscreen="true"
+            mozallowfullscreen="true"
+            webkitallowfullscreen="true">
+        </iframe>
+    """)
 
     display_name = String(
         display_name="Display Name",
@@ -82,7 +91,7 @@ class OneDriveXBlock(XBlock):
         display_name="Output Iframe Embed Code",
         help="Copy the embed code into this field.",
         scope=Scope.settings,
-        default=Filter.EMBED_CODE_TEMPLATE.format(DEFAULT_DOCUMENT_URL)
+        default=EMBED_CODE_TEMPLATE.format(DEFAULT_DOCUMENT_URL)
     )
 
     message = String(
@@ -127,7 +136,6 @@ class OneDriveXBlock(XBlock):
         frag.add_css(self.resource_string("static/css/onedrive.css"))
         frag.add_javascript(self.resource_string("static/js/src/onedrive_edit.js"))
         frag.initialize_js('OneDriveXBlock')
-        frag.add_content(u'<div id="onedrive-js" client-id="869cea06-5f59-4bb9-8e14-a8625d937601"></div>')
         return frag
 
     @XBlock.json_handler
@@ -147,7 +155,7 @@ class OneDriveXBlock(XBlock):
 
         # output model = 1 means embed the document
         if self.output_model == "1":
-            self.output_code = Filter.get_embed_code(url=self.document_url)
+            self.output_code = self.get_onedrive_embed_code(onedrive_url=self.document_url)
             self.message = "Note: Some services may require you to be signed into them to access documents stored there."
             self.message_display_state = "block"
 
@@ -166,6 +174,35 @@ class OneDriveXBlock(XBlock):
 	    # self.model3 = ""
 
         return {'result': 'success'}
+
+    def get_onedrive_embed_code(self, onedrive_url):
+
+        onedrive_url = onedrive_url.strip()
+
+        scheme, netloc, path, query_string, fragment = urlsplit(onedrive_url)
+        query_params = parse_qs(query_string)
+
+        # OneDrive for Business
+        odb_regex = 'https?:\/\/((\w|-)+)-my.sharepoint.com\/'
+        matched = re.match(odb_regex, onedrive_url, re.IGNORECASE)
+
+        if matched is not None:
+            query_params['action'] = ['embedview']
+            new_query_string = urlencode(query_params, doseq=True)
+            document_url = urlunsplit((scheme, netloc, path, new_query_string, fragment))
+            return self.EMBED_CODE_TEMPLATE.format(document_url)
+
+        # OneDrive (for consumers)
+        onedrive_regex = '(https?:\/\/(onedrive\.)?)(live\.com)'
+        matched = re.match(onedrive_regex, onedrive_url, re.IGNORECASE)
+
+        if matched is not None:
+            new_path = path.replace('view.aspx', 'embed').replace('redir', 'embed')
+            query_params = parse_qs(query_string)
+            query_params['em'] = ['2']
+            new_query_string = urlencode(query_params, doseq=True)
+            document_url = urlunsplit((scheme, netloc, new_path, new_query_string, fragment))
+            return self.EMBED_CODE_TEMPLATE.format(document_url)
 
     @staticmethod
     def workbench_scenarios():
