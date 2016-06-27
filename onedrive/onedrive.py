@@ -179,6 +179,13 @@ class OneDriveXBlock(XBlock):
 
         onedrive_url = onedrive_url.strip()
 
+        # check if it already is an embed code
+        embed_code_regex = '<iframe '
+        matched = re.match(embed_code_regex, onedrive_url, re.IGNORECASE)
+
+        if matched is not None:
+            return onedrive_url
+
         scheme, netloc, path, query_string, fragment = urlsplit(onedrive_url)
         query_params = parse_qs(query_string)
 
