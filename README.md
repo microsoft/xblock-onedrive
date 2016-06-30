@@ -1,7 +1,7 @@
 OneDrive XBlock
 ===================
 
-The “OneDrive XBlock” allows course content authors to add files stored in Microsoft OneDrive to the course. The files can be added either as embedded content or as links to the files in their original location.
+The “OneDrive XBlock” allows course content authors to add documents stored in Microsoft OneDrive Online or OneDrive for Business to the course. The files can be added either as embedded content or as links to the files in their original location.
 
 Students can view these files in their Open edX or edX.org courses.
 
@@ -37,7 +37,7 @@ Start by navigating to the unit in studio where you want to insert your file. Fr
 
 ![Studio Component List](docs/img/component_list.png)
 
-This will bring up a list of the XBlocks that have been enabled in Studio. If you followed the previous step to enable the OneDrive XBlock in Studio you will see an option titled `File Storage`. Click on it to insert the File Storage XBlock into your unit.
+This will bring up a list of the XBlocks that have been enabled in Studio. If you followed the previous step to enable the OneDrive XBlock in Studio you will see an option titled `OneDrive`. Click on it to insert the OneDrive XBlock into your unit.
 
 ![Studio Advanced Component Selection](docs/img/onedrive_button.jpg)
 
@@ -52,9 +52,10 @@ To change the file added to the course using the OneDrive XBlock, click on the `
 In this dialog, you can
 
 - Update the XBlock title.
-- Enter the URL to the file from its original location (in OneDrive) 
-    - Note that the file must be publicly accessible. 
+- Enter the URL or embed code for the file from its original location (in OneDrive) 
+    - Note that the file must be accessible to the intended audience. 
     - Also, note that you do not need to obtain an embed code for the file yourself. The OneDrive XBlock can build it automatically. 
+- Also note that this XBlock can handle both, OneDrive Online as well as OneDrive for Business documents.
 
 - Select the way you want the file to be displayed inside the xblock:
     - Embedded inside an iframe OR
