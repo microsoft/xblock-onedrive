@@ -4,8 +4,6 @@
 import textwrap
 
 import pkg_resources
-import urllib2
-import mimetypes
 
 from xblock.core import XBlock
 from xblock.fragment import Fragment
@@ -13,17 +11,11 @@ from xblock.fields import Scope, String
 from django.conf import settings
 
 import logging
-from functools import partial
-from cache_toolbox.core import del_cached_content
 
-from xmodule.contentstore.django import contentstore
-from xmodule.contentstore.content import StaticContent
-from opaque_keys.edx.keys import CourseKey
 LOG = logging.getLogger(__name__)
 
 import re
-from urlparse import parse_qs, urlsplit, urlunsplit
-from urllib import urlencode
+from urllib.parse import parse_qs, urlencode, urlsplit, urlunsplit
 
 DEFAULT_DOCUMENT_URL = ('https://onedrive.live.com/embed?cid=ADC6477D8F22FD9D&resid=ADC6477D8F22FD9D%21104&authkey=AFWEOfGpKb8L29w&em=2&wdStartOn=1')
 
@@ -162,9 +154,9 @@ class OneDriveXBlock(XBlock):
             self.message = "Note: Some services may require you to be signed into them to access documents stored there."
             self.message_display_state = "block"
 
-	    self.model1 = "SELECTED=selected"
-	    self.model2 = ""
-	    # self.model3 = ""
+        self.model1 = "SELECTED=selected"
+        self.model2 = ""
+        # self.model3 = ""
 
         # output model = 2 means add a reference to the document
         if self.output_model == "2":
@@ -172,9 +164,9 @@ class OneDriveXBlock(XBlock):
             self.message = ""
             self.message_display_state = "none"
 
-	    self.model1 = ""
-	    self.model2 = "SELECTED=selected"
-	    # self.model3 = ""
+        self.model1 = ""
+        self.model2 = "SELECTED=selected"
+        # self.model3 = ""
 
         return {'result': 'success'}
 
